@@ -35,6 +35,8 @@ components:
   schemas:
     BookItem:
       type: object
+      required:
+        - book
       properties:
         book:
           type: string
@@ -73,6 +75,7 @@ components:
         quantity:
           type: integer
           format: int32
+          minimum: 0
     BillDetails:
       type: object
       properties:
