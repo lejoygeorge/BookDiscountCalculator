@@ -1,0 +1,23 @@
+public enum {{datatypeWithEnum}} {
+
+  {{#vendorExtensions.x-enum-properties}}
+  {{name}}("{{title}}", "{{author}}", {{year}}, {{price}}){{^-last}},{{/-last}}{{#-last}};{{/-last}}
+  {{/vendorExtensions.x-enum-properties}}
+
+  private final String title;
+  private final String author;
+  private final int year;
+  private final double price;
+
+  {{datatypeWithEnum}}(String title, String author, int year, double price) {
+    this.title = title;
+    this.author = author;
+    this.year = year;
+    this.price = price;
+  }
+
+  public String getTitle() { return title; }
+  public String getAuthor() { return author; }
+  public int getYear() { return year; }
+  public double getPrice() { return price; }
+}

@@ -1,0 +1,87 @@
+openapi: 3.1.0
+info:
+  title: Book Discount Calculator API
+  description: API for calculating Optimal discount.
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.2
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /api/orders/book:
+    get:
+      tags:
+        - order-controller
+      operationId: getOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BookItem'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BillDetails'
+components:
+  schemas:
+    BookItem:
+      type: object
+      properties:
+        book:
+          type: string
+          enum:
+            - CLEAN_CODE
+            - THE_CLEAN_CODER
+            - CLEAN_ARCHITECTURE
+            - TDD_BY_EXAMPLE
+            - WORKING_EFFECTIVELY_WITH_LEGACY_CODE
+          x-enum-properties:
+            - name: "CLEAN_CODE"
+              title: "Clean Code"
+              author: "Robert Martin"
+              year: 2008
+              price: 50.0
+            - name: "THE_CLEAN_CODER"
+              title: "The Clean Coder"
+              author: "Robert Martin"
+              year: 2011
+              price: 50.0
+            - name: "CLEAN_ARCHITECTURE"
+              title: "Clean Architecture"
+              author: "Robert Martin"
+              year: 2017
+              price: 50.0
+            - name: "TDD_BY_EXAMPLE"
+              title: "Test Driven Development by Example"
+              author: "Kent Beck"
+              year: 2003
+              price: 50.0
+            - name: "WORKING_EFFECTIVELY_WITH_LEGACY_CODE"
+              title: "Working Effectively with Legacy Code"
+              author: "Michael C. Feathers"
+              year: 2004
+              price: 50.0
+        quantity:
+          type: integer
+          format: int32
+    BillDetails:
+      type: object
+      properties:
+        originalPrice:
+          type: number
+          format: double
+        finalPrice:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
