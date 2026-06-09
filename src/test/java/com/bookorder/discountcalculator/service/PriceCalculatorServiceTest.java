@@ -24,14 +24,14 @@ class PriceCalculatorServiceTest {
     @Test
     @DisplayName("Should return 0.0 for all prices when the basket is empty")
     void testCalculatePrice_EmptyBasket() {
-        double receipt = priceCalculatorService.calculatePrice(Collections.emptyList());
+        double receipt = priceCalculatorService.calculatePrice(List.of(0, 0, 0, 0, 0));
         assertEquals(0.0, receipt, 0.001);
     }
 
     @Test
     @DisplayName("Should return standard price with zero discount for a single item")
     void testCalculatePrice_SingleItem() {
-        double receipt = priceCalculatorService.calculatePrice(Arrays.asList(new Integer[]{1}));
+        double receipt = priceCalculatorService.calculatePrice(List.of(1, 0, 0, 0, 0));
         assertEquals(50.0, receipt, 0.001);
     }
 }
