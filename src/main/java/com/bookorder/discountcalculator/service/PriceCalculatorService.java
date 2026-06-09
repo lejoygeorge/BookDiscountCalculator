@@ -18,58 +18,43 @@ public class PriceCalculatorService {
     }
     public double calculatePrice(List<Integer> bookCounts) {
         double finalPrice =0.0;
-        finalPrice = minimumPrice(new BookBasket(bookCounts.toArray(new Integer[0])));
+        finalPrice = findMinimumPrice(new BookBasket(bookCounts));
         return finalPrice;
     }
 
-    public record BookBasket(Integer[] counts) {
-        public BookBasket{
-            counts = counts.clone();
-            Arrays.sort(counts, Collections.reverseOrder());
-
-        }
-
-        public boolean isEmpty(){
-            return Arrays.stream(counts).allMatch(count ->count ==0 );
-        }
-
-        @Override
-        public boolean equals(Object obj){
-            return obj instanceof BookBasket other && Arrays.equals(counts, other.counts);
-        }
-
-        @Override
-        public int hashCode(){
-            return Arrays.hashCode(counts);
+    public record BookBasket(List<Integer> counts) {
+        public boolean isEmpty() {
+            return counts.stream().allMatch(count -> count == 0);
         }
     }
 
-    private double minimumPrice(BookBasket currentBasket) {
+    private double findMinimumPrice(BookBasket currentBasket) {
         if (currentBasket.isEmpty()) {
             return 0.0;
         }
-        if (basketCache.containsKey(currentBasket)) {
-            return basketCache.get(currentBasket);
+        Double cachedPrice = basketCache.get(currentBasket);
+        if (cachedPrice != null) {
+            return cachedPrice;
         }
-        int[] availableBooks = IntStream.range(0, currentBasket.counts().length)
-                .filter(index -> currentBasket.counts()[index] > 0)
-                .toArray();
-        double minCost = Double.MAX_VALUE;
-        int totalSubsets = 1 << availableBooks.length;
-        for (int mask = 1; mask < totalSubsets; mask++) {
-            Integer[] nextCounts = currentBasket.counts().clone();
-            int groupSize = 0;
+        var counts = currentBasket.counts();
+        int[] distinctBooksPresent = IntStream.range(0, counts.size())
+                .filter(index -> counts.get(index) > 0).toArray();
+        int numberOfPossibleCombinations = 1 << distinctBooksPresent.length;
+        double minimumPrice = IntStream.range(1, numberOfPossibleCombinations)
+                .mapToDouble(combination -> evaluateCombination(currentBasket, distinctBooksPresent, combination))
+                .min().orElse(Double.MAX_VALUE);
+        basketCache.put(currentBasket, minimumPrice);
+        return minimumPrice;
+    }
 
-            for (int bit = 0; bit < availableBooks.length; bit++) {
-                if ((mask & (1 << bit)) != 0) {
-                    nextCounts[availableBooks[bit]]--;
-                    groupSize++;
-                }
-            }
-            double cost = GROUP_PRICE.get(groupSize) + minimumPrice(new BookBasket(nextCounts));
-            minCost = Math.min(minCost, cost);
-        }
-        basketCache.put(currentBasket, minCost);
-        return minCost;
+    private double evaluateCombination(BookBasket basket, int[] distinctBooksPresent, int combination) {
+        var remainingBooks = new ArrayList<>(basket.counts());
+        var activeIndices = IntStream.range(0, distinctBooksPresent.length)
+                .filter(bookIndex -> (combination & (1 << bookIndex)) != 0)
+                .mapToObj(bookIndex -> distinctBooksPresent[bookIndex]).toList();
+        activeIndices.forEach(actualBookId -> remainingBooks.set(actualBookId, remainingBooks.get(actualBookId) - 1));
+        int currentGroupSize = activeIndices.size();
+        double groupPrice = GROUP_PRICE.get(currentGroupSize);
+        return groupPrice + findMinimumPrice(new BookBasket(remainingBooks));
     }
 }
