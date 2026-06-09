@@ -2,6 +2,7 @@ package com.bookorder.discountcalculator.service;
 
 import com.bookorder.discountcalculator.model.BillDetails;
 import com.bookorder.discountcalculator.model.BookItem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
@@ -9,13 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PriceCalculatorService {
 
     private final PricingStrategy pricingStrategy;
-
-    public PriceCalculatorService(PricingStrategy pricingStrategy) {
-        this.pricingStrategy = pricingStrategy;
-    }
 
     public BillDetails calculatePrice(List<BookItem> purchasedItems) {
         double totalOriginalPrice = purchasedItems.stream()
