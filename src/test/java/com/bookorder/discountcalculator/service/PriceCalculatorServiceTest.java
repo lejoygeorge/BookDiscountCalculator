@@ -18,7 +18,7 @@ class PriceCalculatorServiceTest {
 
     @BeforeEach
     public void setup() {
-        priceCalculatorService = new PriceCalculatorService();
+        priceCalculatorService = new PriceCalculatorService(new OptimalDiscountPricingStrategy());
     }
 
     @Test
