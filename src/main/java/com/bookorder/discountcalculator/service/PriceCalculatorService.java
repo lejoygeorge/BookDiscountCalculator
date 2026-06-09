@@ -14,6 +14,7 @@ public class PriceCalculatorService {
         GROUP_PRICE.put( 2, 95.0);
         GROUP_PRICE.put( 3, 135.0);
         GROUP_PRICE.put( 4, 160.0);
+        GROUP_PRICE.put( 5, 187.5);
     }
     public double calculatePrice(List<Integer> bookCounts) {
         double finalPrice =0.0;

@@ -43,24 +43,31 @@ class PriceCalculatorServiceTest {
     }
 
     @Test
-    @DisplayName("Should return full price (95.0) for two copies of distinct book with 5% discount")
+    @DisplayName("Should return final price (95.0) for two copies of distinct book with 5% discount")
     void testTwoDistinctBooks_5PresentDiscount() {
         double receipt = priceCalculatorService.calculatePrice(List.of(1, 1, 0, 0, 0));
         assertEquals(95.0, receipt, 0.001);
     }
 
     @Test
-    @DisplayName("Should return full price (135.0) for three copies of distinct book with 10% discount")
+    @DisplayName("Should return final price (135.0) for three copies of distinct book with 10% discount")
     void testThreeDistinctBooks_10PresentDiscount() {
         double receipt = priceCalculatorService.calculatePrice(List.of(1, 1, 1, 0, 0));
         assertEquals(135.0, receipt, 0.001);
     }
 
     @Test
-    @DisplayName("Should return full price (160.0) for three copies of distinct book with 20% discount")
+    @DisplayName("Should return final price (160.0) for four copies of distinct book with 20% discount")
     void testFourDistinctBooks_20PresentDiscount() {
         double receipt = priceCalculatorService.calculatePrice(List.of(1, 1, 1, 1, 0));
         assertEquals(160.0, receipt, 0.001);
+    }
+
+    @Test
+    @DisplayName("Should return final price (187.5) for five copies of distinct book with 25% discount")
+    void testFiveDistinctBooks_25PresentDiscount() {
+        double receipt = priceCalculatorService.calculatePrice(List.of(1, 1, 1, 1, 1));
+        assertEquals(187.5, receipt, 0.001);
     }
 
 }
