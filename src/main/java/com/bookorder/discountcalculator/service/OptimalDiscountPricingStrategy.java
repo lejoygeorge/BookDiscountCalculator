@@ -1,7 +1,7 @@
 package com.bookorder.discountcalculator.service;
 
 import com.bookorder.discountcalculator.model.BookBasket;
-import com.bookorder.discountcalculator.Utils.BookDiscountUtils;
+import com.bookorder.discountcalculator.utils.BookDiscountUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

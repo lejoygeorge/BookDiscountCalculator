@@ -14,7 +14,7 @@ class OptimalDiscountPricingStrategyTest {
     private OptimalDiscountPricingStrategy pricingStrategy;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         pricingStrategy = new OptimalDiscountPricingStrategy();
     }
 

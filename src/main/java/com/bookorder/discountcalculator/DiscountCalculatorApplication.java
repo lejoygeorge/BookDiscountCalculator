@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DiscountcalculatorApplication {
+public class DiscountCalculatorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DiscountcalculatorApplication.class, args);
+		SpringApplication.run(DiscountCalculatorApplication.class, args);
 	}
 
 }

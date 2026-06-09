@@ -1,6 +1,5 @@
 package com.bookorder.discountcalculator.utils;
 
-import com.bookorder.discountcalculator.Utils.BookDiscountUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

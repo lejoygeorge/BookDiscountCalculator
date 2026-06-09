@@ -16,18 +16,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleJsonErrors(HttpMessageNotReadableException ex) {
-        if (ex.getCause() instanceof InvalidFormatException invalidFormatException) {
-            if (invalidFormatException.getTargetType() != null && invalidFormatException.getTargetType().isEnum()) {
+        if (ex.getCause() instanceof InvalidFormatException invalidFormatException &&
+            invalidFormatException.getTargetType() != null &&
+            invalidFormatException.getTargetType().isEnum()) {
                 String expectedValues = Arrays.toString(invalidFormatException.getTargetType().getEnumConstants());
                 String fieldName = invalidFormatException.getPath().get(invalidFormatException.getPath().size() - 1).getFieldName();
                 String rejectedValue = invalidFormatException.getValue().toString();
-
                 String errorMessage = String.format("Invalid value '%s' for field '%s'. Accepted values are: %s",
                         rejectedValue, fieldName, expectedValues);
 
                 return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
             }
-        }
         return new ResponseEntity<>("Malformed JSON request", HttpStatus.BAD_REQUEST);
     }
 
