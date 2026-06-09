@@ -41,4 +41,11 @@ class PriceCalculatorServiceTest {
         double receipt = priceCalculatorService.calculatePrice(List.of(2, 0, 0, 0, 0));
         assertEquals(100.0, receipt, 0.001);
     }
+
+    @Test
+    @DisplayName("Should return full price (95.0) for two copies of the distinct book with 5% discount")
+    void testTwoSameBooks_5PresentDiscount() {
+        double receipt = priceCalculatorService.calculatePrice(List.of(1, 1, 0, 0, 0));
+        assertEquals(95.0, receipt, 0.001);
+    }
 }
