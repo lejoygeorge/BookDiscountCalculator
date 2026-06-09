@@ -70,4 +70,11 @@ class PriceCalculatorServiceTest {
         assertEquals(187.5, receipt, 0.001);
     }
 
+    @Test
+    @DisplayName("Should calculate the correct price for a mix of grouped and ungrouped identical books")
+    void testMixedBooks_SimpleGrouping() {
+        double receipt = priceCalculatorService.calculatePrice(List.of(2, 1, 0, 0, 0));
+        assertEquals(145.0, receipt, 0.001);
+    }
+
 }
