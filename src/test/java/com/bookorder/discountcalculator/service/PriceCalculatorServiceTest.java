@@ -77,4 +77,18 @@ class PriceCalculatorServiceTest {
         assertEquals(145.0, receipt, 0.001);
     }
 
+    @Test
+    @DisplayName("Edge Case: Should prefer two groups of four (320.0) over a group of five and three (322.5)")
+    void testComplexEdgeCase_FourPlusFourIsCheaperThanFivePlusThree() {
+        double receipt = priceCalculatorService.calculatePrice(List.of(2, 2, 2, 1, 1));
+        assertEquals(320.0, receipt, 0.001);
+    }
+
+    @Test
+    @DisplayName("Performance: Should quickly calculate the minimum price for a large basket without timing out")
+    void testLargeBasket() {
+        double receipt = priceCalculatorService.calculatePrice(List.of(5, 5, 5, 5, 5));
+        assertEquals(937.5, receipt, 0.001);
+    }
+
 }
