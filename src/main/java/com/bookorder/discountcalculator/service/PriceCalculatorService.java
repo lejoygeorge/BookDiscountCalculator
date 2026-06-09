@@ -1,8 +1,12 @@
 package com.bookorder.discountcalculator.service;
 
+import com.bookorder.discountcalculator.model.BillDetails;
+import com.bookorder.discountcalculator.model.BookItem;
 import org.springframework.stereotype.Service;
 
+import java.util.EnumMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceCalculatorService {
@@ -13,9 +17,19 @@ public class PriceCalculatorService {
         this.pricingStrategy = pricingStrategy;
     }
 
-    public double calculatePrice(List<Integer> bookCounts) {
-        double finalPrice =0.0;
-        finalPrice = pricingStrategy.calculateMinimumPrice(bookCounts);
-        return finalPrice;
+    public BillDetails calculatePrice(List<BookItem> purchasedItems) {
+        double totalOriginalPrice = purchasedItems.stream()
+                .mapToDouble(item -> item.getQuantity() * item.getBook().getPrice()).sum();
+        List<Integer> quantities = purchasedItems.stream()
+                .collect(Collectors.groupingBy(BookItem::getBook,
+                        () -> new EnumMap<>(com.bookorder.discountcalculator.model.BookItem.BookEnum.class),
+                        Collectors.summingInt(BookItem::getQuantity))).values().stream().toList();
+        double totalFinalPrice = pricingStrategy.calculateMinimumPrice(quantities);
+        double totalDiscount = totalOriginalPrice - totalFinalPrice;
+        var receipt = new BillDetails();
+        receipt.setOriginalPrice(totalOriginalPrice);
+        receipt.setFinalPrice(totalFinalPrice);
+        receipt.setDiscount(totalDiscount);
+        return receipt;
     }
 }
