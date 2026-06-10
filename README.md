@@ -19,7 +19,7 @@ A robust Spring Boot RESTful API designed to calculate optimal shopping cart pri
 * **Framework:** Spring Boot 3.x
 * **API Specs:** OpenAPI / Swagger Codegen (Maven Plugin)
 * **Testing:** JUnit 5, Mockito, Spring Boot Test (`MockMvc`)
-* **Code Quality:** JaCoCo, SonarLint / SonarQube
+* **Code Quality:** JaCoCo, SonarLint / SonarQube, PiTest
 
 ## 📖 Business Logic & Pricing Rules
 
@@ -118,6 +118,19 @@ mvn clean test
 Once the tests pass, view the interactive HTML report by opening:
 `target/site/jacoco/index.html` in your web browser.
 
+## 🧪 Mutation Testing (Pitest)
+To evaluate the absolute quality and effectiveness of the test suite, this project utilizes Pitest for mutation testing. It intentionally injects flaws (mutants) into the compiled bytecode to ensure the unit tests actually fail when logic is compromised.
+
+Note: Due to Java agent conflicts between JaCoCo and Pitest, you must explicitly skip JaCoCo when running the mutation analysis.
+
+To execute the mutation tests:
+
+```bash
+mvn clean test-compile org.pitest:pitest-maven:mutationCoverage -Djacoco.skip=true
+
+```
+View the mutation coverage report to see killed and survived mutants by opening:
+`target/pit-reports/index.html` in your web browser.
 ---
 
 *Developed by Lejoy George*
